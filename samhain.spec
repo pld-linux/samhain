@@ -1,23 +1,25 @@
 Summary:	Samhain data integrity / intrusion detection system
-Summary(pl):	Samhain system wykrywania integralno¶ci danych / intruzów
+Summary(pl):	System kontroli integralno¶ci danych i wykrywania intruzów Samhain
 Name:		samhain
-Version:	1.4.0
-Release:	2
+Version:	1.5.4
+Release:	1
 License:	GPL
 Group:		Applications/System
+# extracted from http://www.la-samhna.de/samhain/samhain-current.tar.gz
 Source0:	%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}rc
 Patch0:		%{name}-DESTDIR.patch
-Patch1:		%{name}-dontstrip.patch
 URL:		http://www.la-samhna.de/samhain/index.html
-Prereq:		chkconfig
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# don't strip by system strip
+%define		no_install_post_strip	1
 
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
 
 %description
 Samhain works by creating a "snapshot" of your system, i.e. a database
@@ -30,16 +32,28 @@ kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
 porównuje te pliki z baz±.
 
 %build
-%configure2_13 \
+# stupid... it uses own PARSE_ARG and doesn't recognize some standard options
+./configure \
+	LDFLAGS="%{rpmldflags}" \
+	CFLAGS="%{rpmcflags}" \
+	CPPFLAGS="" \
+	CC=%{__cc} \
+	--build=%{_target_platform} \
+	--prefix=%{_prefix} \
+	--exec-prefix=%{_prefix} \
+	--sbindir=%{_sbindir} \
+	--sysconfdir=%{_sysconfdir} \
+	--localstatedir=%{_localstatedir} \
+	--mandir=%{_mandir} \
 	--with-suidcheck
+
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 %{__make} install-man DESTDIR=$RPM_BUILD_ROOT
-
-gzip -9nf README
 
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d \
 	$RPM_BUILD_ROOT%{_var}/lib/%{name} \
@@ -50,32 +64,32 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}
 
 touch $RPM_BUILD_ROOT%{_localstatedir}/log/samhain_log
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %post
 /sbin/chkconfig --add %{name}
 if [ -f /var/lock/subsys/%{name} ]; then
-    /etc/rc.d/init.d/%{name} restart 1>&2
+	/etc/rc.d/init.d/%{name} restart 1>&2
 else
-    echo "Run \"%{_sbindir}/samhain -t init\" to initialize database"
-    echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} daemon."
+	echo "Run \"%{_sbindir}/samhain -t init\" to initialize database"
+	echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} daemon."
 fi
 
 %preun
 if [ "$1" = "0" ]; then
-    if [ -f /var/lock/subsys/%{name} ]; then
-	/etc/rc.d/init.d/%{name} stop 1>&2
-    fi
-    /sbin/chkconfig --del %{name}
+	if [ -f /var/lock/subsys/%{name} ]; then
+		/etc/rc.d/init.d/%{name} stop 1>&2
+	fi
+	/sbin/chkconfig --del %{name}
 fi
 
 %files
 %defattr(644,root,root,755)
-%doc README.gz
+%doc README
 %attr(750,root,bin) %{_sbindir}/samhain
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/samhainrc
 %attr(700,root,root) %dir %{_var}/lib/%{name}
 %attr(754,root,root)  /etc/rc.d/init.d/%{name}
 %attr(0640,root,root) %ghost %{_localstatedir}/log/samhain_log
 %{_mandir}/man[58]/*
-
-%clean
-rm -rf $RPM_BUILD_ROOT
