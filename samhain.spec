@@ -11,7 +11,7 @@ Source1:	%{name}.init
 Source2:	%{name}rc
 Patch0:		%{name}-DESTDIR.patch
 URL:		http://www.la-samhna.de/samhain/
-Requires:	/sbin/chkconfig
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # don't strip by system strip
