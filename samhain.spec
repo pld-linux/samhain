@@ -10,16 +10,12 @@ Source0:	%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}rc
 Patch0:		%{name}-DESTDIR.patch
-URL:		http://www.la-samhna.de/samhain/index.html
-Requires(post,preun):	/sbin/chkconfig
+URL:		http://www.la-samhna.de/samhain/
+Requires:	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # don't strip by system strip
 %define		no_install_post_strip	1
-
-%prep
-%setup -q -n %{name}-%{version}
-%patch0 -p1
 
 %description
 Samhain works by creating a "snapshot" of your system, i.e. a database
@@ -30,6 +26,10 @@ files regularly against this database.
 Samhain dzia³a tworz±c "obraz" twojego systemu, np. bazê danych sum
 kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
 porównuje te pliki z baz±.
+
+%prep
+%setup -q
+%patch0 -p1
 
 %build
 # stupid... it uses own PARSE_ARG and doesn't recognize some standard options
@@ -51,13 +51,12 @@ porównuje te pliki z baz±.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
-%{__make} install-man DESTDIR=$RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d \
 	$RPM_BUILD_ROOT%{_var}/lib/%{name} \
 	$RPM_BUILD_ROOT%{_localstatedir}/log \
+
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install-man DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}
@@ -72,7 +71,7 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /var/lock/subsys/%{name} ]; then
 	/etc/rc.d/init.d/%{name} restart 1>&2
 else
-	echo "Run \"%{_sbindir}/samhain -t init\" to initialize database"
+	echo "Run \"%{_sbindir}/samhain -t init\" to initialize database if not initialized."
 	echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} daemon."
 fi
 
@@ -90,6 +89,6 @@ fi
 %attr(750,root,bin) %{_sbindir}/samhain
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/samhainrc
 %attr(700,root,root) %dir %{_var}/lib/%{name}
-%attr(754,root,root)  /etc/rc.d/init.d/%{name}
-%attr(0640,root,root) %ghost %{_localstatedir}/log/samhain_log
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
+%attr(640,root,root) %ghost %{_localstatedir}/log/samhain_log
 %{_mandir}/man[58]/*
