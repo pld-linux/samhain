@@ -1,0 +1,96 @@
+diff -urN samhain-1.2.6.orig/Makefile.in samhain-1.2.6/Makefile.in
+--- samhain-1.2.6.orig/Makefile.in	Mon Jul 23 21:00:47 2001
++++ samhain-1.2.6/Makefile.in	Wed Sep 19 23:36:21 2001
+@@ -542,20 +542,20 @@
+ install-exec-am: install-binPROGRAMS install-nobinDATA
+ 
+ install-man: 
+-	$(mkinstalldirs) $(mandir)/man8
+-	$(mkinstalldirs) $(mandir)/man5
++	$(mkinstalldirs) $(DESTDIR)$(mandir)/man8
++	$(mkinstalldirs) $(DESTDIR)$(mandir)/man5
+ 	@if test -f $(srcdir)/samhain.8 ; then \
+ 	    echo "  $(INSTALL_DATA) $(srcdir)/samhain.8 $(mandir)/man8/@install_name@.8"; \
+-	     $(INSTALL_DATA) $(srcdir)/samhain.8 $(mandir)/man8/@install_name@.8; \
++	     $(INSTALL_DATA) $(srcdir)/samhain.8 $(DESTDIR)$(mandir)/man8/@install_name@.8; \
+ 	fi
+ 	@if test -f $(srcdir)/samhainrc.5 ; then \
+ 	    echo "  $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(mandir)/man5/@install_name@rc.5"; \
+-	     $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(mandir)/man5/@install_name@rc.5; \
++	     $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(DESTDIR)$(mandir)/man5/@install_name@rc.5; \
+ 	fi
+ 
+ install-nobinDATA:
+ 	@$(NORMAL_INSTALL)
+-	@$(mkinstalldirs) $(configdir)
++	@$(mkinstalldirs) $(DESTDIR)$(configdir)
+ 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+ 	  if test "x$$p" = "xsamhain_stealth"; then \
+ 	    echo " "; \
+@@ -572,7 +572,7 @@
+ 	if test "x$$stealthflag" = "x"; then \
+ 	  if test -f $(srcdir)/samhainrc ; then \
+ 	    echo " $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile)"; \
+-	    $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile); \
++	    $(INSTALL_DATA) $(srcdir)/samhainrc $(DESTDIR)$(configfile); \
+ 	    echo " "; \
+ 	    echo " Installed samhainrc to $(configfile)"; \
+ 	  else :; fi; \
+@@ -612,14 +612,14 @@
+ 
+ install-binPROGRAMS: $(bin_PROGRAMS) sstrip install-lkm
+ 	@$(NORMAL_INSTALL)
+-	@$(mkinstalldirs) $(bindir)
++	@$(mkinstalldirs) $(DESTDIR)$(bindir)
+ 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+ 	  if test -f $$p; then \
+ 	    echo " strip $$p && sstrip $$p"; \
+ 	    echo " $(INSTALL_PROGRAM) $$p $(bindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
+ 	    strip $$p > /dev/null 2>&1; \
+ 	    ./sstrip  $$p; \
+-	    $(INSTALL_PROGRAM) $$p $(bindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
++	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
+ 	  else :; fi; \
+ 	done
+ 
+@@ -653,14 +653,14 @@
+ 	if test "x@sh_lkm@" != "x"; then \
+ 		if test -d /lib/modules/$$RVER/misc; then \
+ 			echo " cp samhain_hide.o /lib/modules/$$RVER/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`"; \
+-	  		cp samhain_hide.o /lib/modules/$$RVER/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'` ; \
++	  		cp samhain_hide.o $(DESTDIR)/lib/modules/$$RVER/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'` ; \
+ 			echo " cp samhain_erase.o /lib/modules/$$RVER/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'`"; \
+-	  		cp samhain_erase.o /lib/modules/$$RVER/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
++	  		cp samhain_erase.o $(DESTDIR)/lib/modules/$$RVER/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
+ 		elif test -d /lib/modules/misc; then \
+ 	  		echo " cp samhain_hide.o /lib/modules/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`"; \
+-	  		cp samhain_hide.o /lib/modules/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`; \
++	  		cp samhain_hide.o $(DESTDIR)/lib/modules/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`; \
+ 			echo " cp samhain_erase.o /lib/modules/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'`"; \
+-	  		cp samhain_erase.o /lib/modules/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
++	  		cp samhain_erase.o $(DESTDIR)/lib/modules/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
+ 		else \
+ 	  		echo " install-lkm: No module directory found."; \
+ 		fi; \
+@@ -918,8 +918,8 @@
+ #
+ deploy-install-pack: samhain.pk
+ 	@$(NORMAL_INSTALL)
+-	@echo "$(mkinstalldirs) $(bindir)"; \
+-	$(mkinstalldirs) $(bindir)
++	@echo "$(mkinstalldirs) $(DESTDIR)$(bindir)"; \
++	$(mkinstalldirs) $(DESTDIR)$(bindir)
+ 	@if test -f samhain.pk; then \
+ 	  $(INSTALL_PROGRAM) samhain.pk $(bindir)/$(installname); \
+ 	 else :; \
+@@ -931,8 +931,8 @@
+ 
+ deploy-install: samhain
+ 	@$(NORMAL_INSTALL)
+-	@echo "$(mkinstalldirs) $(bindir)"; \
+-	$(mkinstalldirs) $(bindir)
++	@echo "$(mkinstalldirs) $(DESTDIR)$(bindir)"; \
++	$(mkinstalldirs) $(DESTDIR)$(bindir)
+ 	@if test -f samhain; then \
+ 	  strip samhain; \
+ 	  ./sstrip samhain; \
