@@ -6,6 +6,7 @@ Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	http://samhain.securecirt.org/%{name}_signed-%{version}.tar.gz
+# Source0-md5:	ab1102d1eca6f4e37453d5893a49a8ee
 Source1:	%{name}.init
 Source2:	%{name}rc
 #Patch0:		%{name}-DESTDIR.patch
