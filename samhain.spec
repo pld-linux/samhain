@@ -45,6 +45,8 @@ rm -rf $RPM_BUILD_ROOT
 
 gzip README
 
+install -d $RPM_BUILD_ROOT{%{_initdir},%{_logdir}}
+
 install %{SOURCE1} $RPM_BUILD_ROOT%{_initdir}/%{name}
 
 %post
