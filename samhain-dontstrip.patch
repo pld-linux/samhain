@@ -1,12 +1,12 @@
-diff -urN samhain-1.2.6.orig/Makefile.in samhain-1.2.6/Makefile.in
---- samhain-1.2.6.orig/Makefile.in	Thu Sep 20 19:32:15 2001
-+++ samhain-1.2.6/Makefile.in	Thu Sep 20 19:51:42 2001
-@@ -617,8 +617,6 @@
+diff -uNr samhain-1.3.5-old/Makefile.in samhain-1.3.5/Makefile.in
+--- samhain-1.3.5-old/Makefile.in	Mon Jan  7 11:57:22 2002
++++ samhain-1.3.5/Makefile.in	Mon Jan  7 12:12:57 2002
+@@ -714,8 +714,6 @@
  	  if test -f $$p; then \
  	    echo " strip $$p && sstrip $$p"; \
- 	    echo " $(INSTALL_PROGRAM) $$p $(bindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
+ 	    echo " $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
 -	    strip $$p > /dev/null 2>&1; \
 -	    ./sstrip  $$p; \
- 	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
+ 	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
  	  else :; fi; \
  	done

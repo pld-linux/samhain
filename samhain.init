@@ -6,8 +6,8 @@
 # description: File Integrity Checking Daemon
 # processname: samhain
 # config  : /etc/samhain/samhainrc
-# logfile : /var/log/.samhain_log
-# database: /var/log/.samhain_file
+# logfile : /var/log/samhain_log
+# database: /var/lib/samhain/samhain_file
 
 # source function library
 . /etc/rc.d/init.d/functions
@@ -19,19 +19,19 @@ case "$1" in
   start)
 	if [ ! -f /var/lock/subsys/samhain ]; then
 	    msg_starting samhain
-	    daemon samhain
+	    daemon samhain -D
 	    RETVAL=$?
 	    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/samhain
 	else
 	    msg_Already_Running samhain
 	    exit 1
 	fi
-	;;													        fi
+	;;
   stop)
         if [ -f /var/lock/subsys/samhain ]; then
 	    msg_stopping samhain
 	    killproc samhain
-	    rm -f /var/lock/subsys/ipfm /var/run/ipfm.pid >/dev/null 2>&1
+	    rm -f /var/lock/subsys/samhain /var/run/samhain.pid >/dev/null 2>&1
 	else
 	    msg_Not_Running samhain
 	    exit 1
