@@ -23,7 +23,7 @@ of cryptographic checksums of all critical files, and comparing these
 files regularly against this database.
 
 %description -l pl
-Samhain dzia³a tworz±c "obraz" twojego systemu, np. bazê danych sum
+Samhain dzia³a tworz±c "obraz" twojego systemu, tj. bazê danych sum
 kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
 porównuje te pliki z baz±.
 
