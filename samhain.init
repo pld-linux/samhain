@@ -1,56 +1,60 @@
 #!/bin/sh
 #
-# samhain init file for samhain
+# samhain	init file for samhain
 #
-# chkconfig:    2345 95 10
-# description: File Integrity Checking Daemon
-# processname: samhain
-# config  : /etc/samhain/samhainrc
-# logfile : /var/log/samhain_log
-# database: /var/lib/samhain/samhain_file
+# chkconfig:	2345 95 10
+# description:	File Integrity Checking Daemon
+# processname:	samhain
+# config:	/etc/samhain/samhainrc
+# logfile:	/var/log/samhain_log
+# database:	/var/lib/samhain/samhain_file
 
 # source function library
 . /etc/rc.d/init.d/functions
 
-prefix="/usr"
-exec_prefix="/usr"
 
 case "$1" in
   start)
 	if [ ! -f /var/lock/subsys/samhain ]; then
-	    msg_starting samhain
-	    daemon samhain -D
-	    RETVAL=$?
-	    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/samhain
+		msg_starting samhain
+		daemon samhain -D
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/samhain
 	else
-	    msg_Already_Running samhain
-	    exit 1
+		msg_already_running samhain
+		exit 1
 	fi
 	;;
   stop)
-        if [ -f /var/lock/subsys/samhain ]; then
-	    msg_stopping samhain
-	    killproc samhain
-	    rm -f /var/lock/subsys/samhain /var/run/samhain.pid >/dev/null 2>&1
+	if [ -f /var/lock/subsys/samhain ]; then
+		msg_stopping samhain
+		killproc samhain
+		rm -f /var/lock/subsys/samhain /var/run/samhain.pid >/dev/null 2>&1
 	else
-	    msg_Not_Running samhain
-	    exit 1
+		msg_not_running samhain
+		exit 1
 	fi
 	;;
   restart)
-        $0 stop
-        $0 start
-        ;;
-  reload)
-	msg_reloading samhain
-        killproc samhain -HUP
-        ;;
+	$0 stop
+	$0 start
+	;;
+  reload|force-reload)
+	if [ -f /var/lock/subsys/samhain ]; then
+		msg_reloading samhain
+		killproc samhain -HUP
+		RETVAL=$?
+	else
+		msg_not_running samhain
+		exit 1
+	fi
+	;;
   status)
-        status samhain
-        ;;
+	status samhain
+	;;
   *)
-	msg_Usage "$0 {start|stop|restart|reload|status}"
-        exit 1
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	exit 1
 esac
 
 exit $RETVAL
