@@ -16,10 +16,6 @@ Requires(post,preun):	/sbin/chkconfig
 BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-# don't strip by system strip
-%define		no_install_post_strip	1
-#%%define 	_use_internal_dependency_generator 0
-
 %description
 Samhain works by creating a "snapshot" of your system, i.e. a database
 of cryptographic checksums of all critical files, and comparing these
@@ -44,7 +40,11 @@ cp -f /usr/share/automake/config.sub .
 	--enable-suidcheck
 
 %{__make} \
-	CC="%{__cc}"
+	CC="%{__cc}" \
+	LIBS_TRY="-lresolv"
+
+# sstrip breaks ELFs
+echo ':' > sstrip
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -52,8 +52,10 @@ install -d $RPM_BUILD_ROOT/etc/rc.d/init.d \
 	$RPM_BUILD_ROOT%{_var}/lib/%{name} \
 	$RPM_BUILD_ROOT%{_localstatedir}/log \
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
-%{__make} install-man DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
+%{__make} install-man \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}
