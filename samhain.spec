@@ -1,19 +1,21 @@
 Summary:	Samhain data integrity / intrusion detection system
 Name:		samhain
 Version:	1.2.6
-Release:	0.1
+Release:	1
 URL:		http://www.la-samhna.de/samhain/index.html
 Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-DESTDIR.patch
 Patch1:		%{name}-dontstrip.patch
 License:	GPL
-Group:		Console/Security
-######		Unknown group!
+Group:		Applications/System
+Group(de):	Applikationen/System
+Group(pl):	Aplikacje/System
 Provides:	%{name}
 #BuildRequires:	
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _sysconfdir     /etc/%{name}
+%define		_logdir		/var/log/%{name}
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -46,7 +48,7 @@ gzip README
 %doc README.gz
 %attr(750,root,bin) %{_bindir}/samhain
 %config %{_sysconfdir}/samhainrc
-#%ghost /var/log/samhain
+%dir %{_logdir}
 %{_mandir}/man[58]/*
 
 %clean
