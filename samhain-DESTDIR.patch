@@ -1,96 +1,70 @@
-Binary files samhain-1.4.0-org/.Makefile.in.swp and samhain-1.4.0/.Makefile.in.swp differ
-diff -uNr samhain-1.4.0-org/Makefile.in samhain-1.4.0/Makefile.in
---- samhain-1.4.0-org/Makefile.in	Wed Jan 16 13:09:39 2002
-+++ samhain-1.4.0/Makefile.in	Tue Jan 22 21:03:24 2002
-@@ -654,22 +654,22 @@
- install-exec-am: install-binPROGRAMS install-nobinDATA
+diff -urN samhain-1.5.4/Makefile.in samhain-1.5.4.dzikus/Makefile.in
+--- samhain-1.5.4/Makefile.in	Mon Jun 24 21:28:06 2002
++++ samhain-1.5.4.dzikus/Makefile.in	Wed Jul 24 12:51:06 2002
+@@ -310,11 +310,11 @@
  
- install-man: 
--	$(mkinstalldirs) $(mymandir)/man8
--	$(mkinstalldirs) $(mymandir)/man5
-+	$(mkinstalldirs) $(DESTDIR)$(mymandir)/man8
-+	$(mkinstalldirs) $(DESTDIR)$(mymandir)/man5
- 	@if test -f $(srcdir)/samhain.8 ; then \
- 	    echo "  $(INSTALL_DATA) $(srcdir)/samhain.8 $(mymandir)/man8/@install_name@.8"; \
--	     $(INSTALL_DATA) $(srcdir)/samhain.8 $(mymandir)/man8/@install_name@.8; \
-+	     $(INSTALL_DATA) $(srcdir)/samhain.8 $(DESTDIR)$(mymandir)/man8/@install_name@.8; \
- 	fi
- 	@if test -f $(srcdir)/samhainrc.5 ; then \
- 	    echo "  $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(mymandir)/man5/@install_name@rc.5"; \
--	     $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(mymandir)/man5/@install_name@rc.5; \
-+	     $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(DESTDIR)$(mymandir)/man5/@install_name@rc.5; \
- 	fi
  
- install-nobinDATA:
- 	@$(NORMAL_INSTALL)
--	@$(mkinstalldirs) $(configdir)
+ install-program: $(PROGRAMS) sstrip
+-	@$(mkinstalldirs) $(sbindir)
++	@$(mkinstalldirs) $(DESTDIR)$(sbindir)
+ 	@list='$(PROGRAMS)'; for p in $$list; do \
+ 	  if test -f $$p; then \
+-	    echo " $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
+-	    $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
++	    echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
++	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
+ 	    echo " ./sstrip $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
+ 	    ./sstrip $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
+ 	  else :; fi; \
+@@ -335,11 +335,11 @@
+ #
+ 
+ install-data: trustfile
+-	@$(mkinstalldirs) $(sysconfdir)
+-	@$(mkinstalldirs) $(mylockdir)
+-	@$(mkinstalldirs) $(mylogdir)
 -	@$(mkinstalldirs) $(mydatadir); \
 -	chmod 700 $(mydatadir)
-+	@$(mkinstalldirs) $(DESTDIR)$(configdir)
++	@$(mkinstalldirs) $(DESTDIR)$(sysconfdir)
++	@$(mkinstalldirs) $(DESTDIR)$(mylockdir)
++	@$(mkinstalldirs) $(DESTDIR)$(mylogdir)
 +	@$(mkinstalldirs) $(DESTDIR)$(mydatadir); \
 +	chmod 700 $(DESTDIR)$(mydatadir)
- 	@list='$(SPROGRAMS)'; for p in $$list; do \
- 	  if test "x$$p" = "xsamhain_stealth"; then \
- 	    echo " "; \
-@@ -689,7 +689,7 @@
- 		echo "config file $(configfile) exist ... skipping install"; \
- 	    else \
- 	        echo " $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile)"; \
--	        $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile); \
-+	        $(INSTALL_DATA) $(srcdir)/samhainrc $(DESTDIR)$(configfile); \
- 	        echo " "; \
- 	        echo " Installed samhainrc to $(configfile)"; \
-             fi; \
-@@ -698,8 +698,8 @@
+ 	@if test -f samhainrc.$(selectconfig); then \
+ 		:; \
+ 	else \
+@@ -383,15 +383,15 @@
+ #
  
- install-yuleDATA:
- 	@$(NORMAL_INSTALL)
--	@$(mkinstalldirs) $(configdir)
--	@$(mkinstalldirs) $(mydatadir); \
-+	@$(mkinstalldirs) $(DESTDIR)$(configdir)
-+	@$(mkinstalldirs) $(DESTDIR)$(mydatadir); \
- 	chmod 700 $(mydatadir)
- 	@configbase=`basename $(configfile)`; \
- 	if test "x$$configbase" = "xsamhainrc"; then \
-@@ -726,7 +726,7 @@
- 	     echo "config file $$cfgfile exist ... skipping install"; \
- 	    else \
- 	     echo " $(INSTALL_DATA) $(srcdir)/yulerc.template $$cfgfile"; \
--	     $(INSTALL_DATA) $(srcdir)/yulerc.template $$cfgfile; \
-+	     $(INSTALL_DATA) $(srcdir)/yulerc.template $(DESTDIR)$$cfgfile; \
- 	     echo " "; \
- 	     echo " Installed yulerc.template to $$cfgfile"; \
- 	    fi; \
-@@ -793,27 +793,27 @@
+ install-man: 
+-	$(mkinstalldirs) $(mandir)/man8
+-	$(mkinstalldirs) $(mandir)/man5
++	$(mkinstalldirs) $(DESTDIR)$(mandir)/man8
++	$(mkinstalldirs) $(DESTDIR)$(mandir)/man5
+ 	@if test -f $(srcdir)/samhain.8 ; then \
+-	    echo "  $(INSTALL_DATA) $(srcdir)/samhain.8 $(mandir)/man8/@install_name@.8"; \
+-	     $(INSTALL_DATA) $(srcdir)/samhain.8 $(mandir)/man8/@install_name@.8; \
++	    echo "  $(INSTALL_DATA) $(srcdir)/samhain.8 $(DESTDIR)$(mandir)/man8/@install_name@.8"; \
++	     $(INSTALL_DATA) $(srcdir)/samhain.8 $(DESTDIR)$(mandir)/man8/@install_name@.8; \
+ 	fi
+ 	@if test -f $(srcdir)/samhainrc.5 ; then \
+-	    echo "  $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(mandir)/man5/@install_name@rc.5"; \
+-	     $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(mandir)/man5/@install_name@rc.5; \
++	    echo "  $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(DESTDIR)$(mandir)/man5/@install_name@rc.5"; \
++	     $(INSTALL_DATA) $(srcdir)/samhainrc.5 $(DESTDIR)$(mandir)/man5/@install_name@rc.5; \
+ 	fi
  
- install-binPROGRAMS: $(bin_PROGRAMS) sstrip install-lkm
- 	@$(NORMAL_INSTALL)
--	@$(mkinstalldirs) $(sbindir)
-+	@$(mkinstalldirs) $(DESTDIR)$(sbindir)
- 	@list='$(SPROGRAMS)'; for p in $$list; do \
- 	  if test -f $$p; then \
- 	    echo " strip $$p && ./sstrip $$p"; \
- 	    echo " $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
- 	    strip $$p > /dev/null 2>&1; \
- 	    ./sstrip  $$p; \
--	    $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
-+	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
- 	  else :; fi; \
- 	done
+ uninstall-man:
+@@ -589,9 +589,9 @@
+ 	rm -rf $(sbindir)/deploy.sh
  
- install-yulePROGRAMS: yule sstrip 
- 	@$(NORMAL_INSTALL)
--	@$(mkinstalldirs) $(sbindir)
-+	@$(mkinstalldirs) $(DESTDIR)$(sbindir)
- 	@list='$(YPROGRAMS)'; for p in $$list; do \
- 	  if test -f $$p; then \
- 	    echo " strip $$p && ./sstrip $$p"; \
- 	    if test "x@install_name@" = "xsamhain"; then \
--		echo " $(INSTALL_PROGRAM) $$p $(sbindir)/$$p"; \
-+		echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/$$p"; \
- 	    else \
--	        echo " $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%yule%@install_name@%'`";\
-+	        echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%yule%@install_name@%'`";\
- 	    fi; \
- 	    strip $$p > /dev/null 2>&1; \
- 	    ./sstrip  $$p; \
+ install-deploy: $(DEPLOYINSTALLFILES)  deploy.sh
+-	$(mkinstalldirs) $(sbindir)
+-	$(mkinstalldirs) $(mydatadir)/profiles/src
+-	$(INSTALL_DATA) Makefile $(mydatadir)/profiles/src/Makefile
++	$(mkinstalldirs) $(DESTDIR)$(sbindir)
++	$(mkinstalldirs) $(DESTDIR)$(mydatadir)/profiles/src
++	$(INSTALL_DATA) Makefile $(DESTDIR)$(mydatadir)/profiles/src/Makefile
+ 	@echo "copy source files to $(mydatadir)/profiles/src"
+ 	@for file in $(DEPLOYINSTALLFILES); do \
+ 	  d=$(srcdir); \
