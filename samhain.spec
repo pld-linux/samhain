@@ -25,13 +25,13 @@ of cryptographic checksums of all critical files, and comparing these
 files regularly against this database.
 
 %description -l pl
-Samhain dzia³a tworz±c "obraz" twojego systemu, np. bazê danych sum 
-kontrolnych wszystkich krytycznych plików a nastêpnie regularnie porównuje 
-te pliki z baz±.
+Samhain dzia³a tworz±c "obraz" twojego systemu, np. bazê danych sum
+kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
+porównuje te pliki z baz±.
 
 %build
 %configure2_13 \
-	--with-suidcheck 
+	--with-suidcheck
 %{__make}
 
 %install
