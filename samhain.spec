@@ -30,8 +30,11 @@ kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
 porównuje te pliki z baz±.
 
 %build
-%configure2_13 \
+aclocal
+%{__autoconf}
+%configure \
 	--with-suidcheck
+
 %{__make}
 
 %install
