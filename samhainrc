@@ -34,7 +34,7 @@
 #
 file=/etc/mtab
 #file=/etc/ssh_random_seed
-#file=/etc/asound.conf
+file=/etc/asound.conf
 file=/etc/resolv.conf
 file=/etc/localtime
 file=/etc/ioctl.save
@@ -206,7 +206,7 @@ SuidCheckInterval=86400
 #
 # Limit on files per second
 #
-SuidCheckFps=250
+SuidCheckFps=500
 
 
 [Kernel]
