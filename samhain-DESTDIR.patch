@@ -1,7 +1,6 @@
-diff -urN samhain-1.5.4/Makefile.in samhain-1.5.4.dzikus/Makefile.in
---- samhain-1.5.4/Makefile.in	Mon Jun 24 21:28:06 2002
-+++ samhain-1.5.4.dzikus/Makefile.in	Wed Jul 24 12:51:06 2002
-@@ -310,11 +310,11 @@
+--- samhain-1.5.4/Makefile.in	Mon Aug  5 11:09:15 2002
++++ samhain-1.5.4/Makefile.in	Mon Aug  5 11:09:48 2002
+@@ -310,13 +310,13 @@
  
  
  install-program: $(PROGRAMS) sstrip
@@ -11,11 +10,15 @@ diff -urN samhain-1.5.4/Makefile.in samhain-1.5.4.dzikus/Makefile.in
  	  if test -f $$p; then \
 -	    echo " $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
 -	    $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
+-	    echo " ./sstrip $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
+-	    ./sstrip $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
 +	    echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
 +	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
- 	    echo " ./sstrip $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
- 	    ./sstrip $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
++	    echo " ./sstrip $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
++	    ./sstrip $(DESTDIR)$(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`; \
  	  else :; fi; \
+ 	done
+ 
 @@ -335,11 +335,11 @@
  #
  
