@@ -2,7 +2,7 @@
 #
 # samhain init file for samhain
 #
-# chkconfig:    2345 99 10
+# chkconfig:    2345 95 10
 # description: File Integrity Checking Daemon
 # processname: samhain
 # config  : /etc/samhain/samhainrc
