@@ -1,9 +1,10 @@
 Summary:	Samhain data integrity / intrusion detection system
 Name:		samhain
 Version:	1.2.6
-Release:	1
+Release:	0.2
 URL:		http://www.la-samhna.de/samhain/index.html
 Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.bz2
+Source1:	%{name}.init
 Patch0:		%{name}-DESTDIR.patch
 Patch1:		%{name}-dontstrip.patch
 License:	GPL
@@ -14,8 +15,9 @@ Provides:	%{name}
 #BuildRequires:	
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define         _sysconfdir     /etc/%{name}
-%define		_logdir		/var/log/%{name}
+%define		_sysconfdir		/etc/%{name}
+%define		_logdir			/var/log/%{name}
+%define		_initdir		/etc/rc.d/init.d
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -42,6 +44,24 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install-man DESTDIR=$RPM_BUILD_ROOT
 
 gzip README
+
+install %{SOURCE1} $RPM_BUILD_ROOT%{_initdir}/%{name}
+
+%post
+/sbin/chkconfig --add %{name}
+if [ -f /var/lock/subsys/%{name} ]; then
+    /etc/rc.d/init.d/%{name} restart 1>&2
+else
+    echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} daemon."
+fi
+
+%preun
+if [ "$1" = "0" ]; then
+    if [ -f /var/lock/subsys/%{name} ]; then
+	/etc/rc.d/init.d/%{name} stop 1>&2
+    fi
+    /sbin/chkconfig --del %{name}
+fi
 
 %files
 %defattr(644,root,root,755)
