@@ -1,7 +1,8 @@
 Summary:	Samhain data integrity / intrusion detection system
+Summary(pl):	Samhain system wykrywania integralno¶ci danych / intruzów
 Name:		samhain
 Version:	1.2.6
-Release:	0.2
+Release:	0.3
 URL:		http://www.la-samhna.de/samhain/index.html
 Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.bz2
 Source1:	%{name}.init
@@ -28,6 +29,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Samhain works by creating a "snapshot" of your system, i.e. a database
 of cryptographic checksums of all critical files, and comparing these
 files regularly against this database.
+
+%description -l pl
+Samhain dzia³a tworz±c "obraz" twojego systemu, np. bazê danych sum 
+kontrolnych wszystkich krytycznych plików a nastêpnie regularnie porównuje 
+te pliki z baz±.
 
 %build
 %configure2_13 \
