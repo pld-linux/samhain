@@ -1,8 +1,8 @@
 Summary:	Samhain data integrity / intrusion detection system
 Summary(pl):	Samhain system wykrywania integralno¶ci danych / intruzów
 Name:		samhain
-Version:	1.2.6
-Release:	0.3
+Version:	1.3.5
+Release:	0.1
 URL:		http://www.la-samhna.de/samhain/index.html
 Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.bz2
 Source1:	%{name}.init
@@ -12,14 +12,8 @@ License:	GPL
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
-Provides:	%{name}
 Prereq:		chkconfig
-#BuildRequires:	
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_sysconfdir		/etc/%{name}
-%define		_logdir			/var/log/%{name}
-%define		_initdir		/etc/rc.d/init.d
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -38,11 +32,7 @@ te pliki z baz±.
 
 %build
 %configure2_13 \
-	--with-gpg \
-	--with-config-file=%{_sysconfdir}/%{name}rc \
-	--with-suidcheck
-#	--enable-khide
-
+	--with-suidcheck 
 %{__make}
 
 %install
@@ -52,7 +42,8 @@ rm -rf $RPM_BUILD_ROOT
 
 gzip -9nf README
 
-install -d $RPM_BUILD_ROOT{%{_initdir},%{_logdir}}
+install -d $RPM_BUILD_ROOT/etc/rc.d/init.d \
+	$RPM_BUILD_ROOT/%{_var}/lib/%{name}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_initdir}/%{name}
 
@@ -75,9 +66,11 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README.gz
-%attr(750,root,bin) %{_bindir}/samhain
+%attr(750,root,bin) %{_sbindir}/samhain
 %config %{_sysconfdir}/samhainrc
-%dir %{_logdir}
+#%dir %{_logdir}
+%attr(700,root,root) %dir %{_var}/lib/%{name}
+%attr(754,root,root)  /etc/rc.d/init.d/%{name}
 %{_mandir}/man[58]/*
 
 %clean
