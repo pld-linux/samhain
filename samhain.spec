@@ -13,6 +13,7 @@ Source2:	%{name}rc
 Patch0:		%{name}-configure.patch
 URL:		http://www.la-samhna.de/samhain/
 Requires(post,preun):	/sbin/chkconfig
+BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # don't strip by system strip
@@ -34,6 +35,7 @@ tar xzf %{name}-%{version}.tar.gz -C ..
 %patch0 -p1
 
 %build
+cp -f /usr/share/automake/config.sub .
 %configure \
 	--enable-login-watch \
 	--enable-mounts-check \
