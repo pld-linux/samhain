@@ -2,7 +2,7 @@ Summary:	Samhain data integrity / intrusion detection system
 Summary(pl):	Samhain system wykrywania integralno¶ci danych / intruzów
 Name:		samhain
 Version:	1.3.5
-Release:	0.1
+Release:	0.2
 URL:		http://www.la-samhna.de/samhain/index.html
 Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.bz2
 Source1:	%{name}.init
@@ -44,16 +44,20 @@ rm -rf $RPM_BUILD_ROOT
 gzip -9nf README
 
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d \
-	$RPM_BUILD_ROOT/%{_var}/lib/%{name}
+	$RPM_BUILD_ROOT%{_var}/lib/%{name} \
+	$RPM_BUILD_ROOT%{_localstatedir}/log \
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
-install %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}
+
+touch $RPM_BUILD_ROOT%{_localstatedir}/log/samhain_log
 
 %post
 /sbin/chkconfig --add %{name}
 if [ -f /var/lock/subsys/%{name} ]; then
     /etc/rc.d/init.d/%{name} restart 1>&2
 else
+    echo "Run \"%{_sbindir}/samhain -t init\" to initialize database"
     echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} daemon."
 fi
 
@@ -69,10 +73,10 @@ fi
 %defattr(644,root,root,755)
 %doc README.gz
 %attr(750,root,bin) %{_sbindir}/samhain
-%config %{_sysconfdir}/samhainrc
-#%dir %{_logdir}
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/samhainrc
 %attr(700,root,root) %dir %{_var}/lib/%{name}
 %attr(754,root,root)  /etc/rc.d/init.d/%{name}
+%attr(0640,root,root) %ghost %{_localstatedir}/log/samhain_log
 %{_mandir}/man[58]/*
 
 %clean
