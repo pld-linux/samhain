@@ -27,9 +27,8 @@ kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
 porównuje te pliki z baz±.
 
 %prep
-%setup -qcT
-tar xz -C %{_builddir} -f %{SOURCE0} 
-tar xz -C %{_builddir} -f %{_tmppath}/%{name}-%{version}.tar.gz
+%setup -qc
+tar xzf %{name}-%{version}.tar.gz -C ..
 
 %build
 %configure \
