@@ -1,7 +1,8 @@
-diff -uNr samhain-1.3.5-old/Makefile.in samhain-1.3.5/Makefile.in
---- samhain-1.3.5-old/Makefile.in	Sun Dec 16 22:56:57 2001
-+++ samhain-1.3.5/Makefile.in	Mon Jan  7 11:57:22 2002
-@@ -599,22 +599,22 @@
+Binary files samhain-1.4.0-org/.Makefile.in.swp and samhain-1.4.0/.Makefile.in.swp differ
+diff -uNr samhain-1.4.0-org/Makefile.in samhain-1.4.0/Makefile.in
+--- samhain-1.4.0-org/Makefile.in	Wed Jan 16 13:09:39 2002
++++ samhain-1.4.0/Makefile.in	Tue Jan 22 21:03:24 2002
+@@ -654,22 +654,22 @@
  install-exec-am: install-binPROGRAMS install-nobinDATA
  
  install-man: 
@@ -28,19 +29,19 @@ diff -uNr samhain-1.3.5-old/Makefile.in samhain-1.3.5/Makefile.in
 +	@$(mkinstalldirs) $(DESTDIR)$(configdir)
 +	@$(mkinstalldirs) $(DESTDIR)$(mydatadir); \
 +	chmod 700 $(DESTDIR)$(mydatadir)
- 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+ 	@list='$(SPROGRAMS)'; for p in $$list; do \
  	  if test "x$$p" = "xsamhain_stealth"; then \
  	    echo " "; \
-@@ -631,7 +631,7 @@
- 	if test "x$$stealthflag" = "x"; then \
- 	  if test -f $(srcdir)/samhainrc ; then \
- 	    echo " $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile)"; \
--	    $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile); \
-+	    $(INSTALL_DATA) $(srcdir)/samhainrc $(DESTDIR)$(configfile); \
- 	    echo " "; \
- 	    echo " Installed samhainrc to $(configfile)"; \
- 	  else :; fi; \
-@@ -639,8 +639,8 @@
+@@ -689,7 +689,7 @@
+ 		echo "config file $(configfile) exist ... skipping install"; \
+ 	    else \
+ 	        echo " $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile)"; \
+-	        $(INSTALL_DATA) $(srcdir)/samhainrc $(configfile); \
++	        $(INSTALL_DATA) $(srcdir)/samhainrc $(DESTDIR)$(configfile); \
+ 	        echo " "; \
+ 	        echo " Installed samhainrc to $(configfile)"; \
+             fi; \
+@@ -698,8 +698,8 @@
  
  install-yuleDATA:
  	@$(NORMAL_INSTALL)
@@ -49,26 +50,26 @@ diff -uNr samhain-1.3.5-old/Makefile.in samhain-1.3.5/Makefile.in
 +	@$(mkinstalldirs) $(DESTDIR)$(configdir)
 +	@$(mkinstalldirs) $(DESTDIR)$(mydatadir); \
  	chmod 700 $(mydatadir)
- 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
- 	  if test "x$$p" = "xsamhain_stealth"; then \
-@@ -658,7 +658,7 @@
- 	if test "x$$stealthflag" = "x"; then \
- 	  if test -f $(srcdir)/yulerc.template ; then \
- 	    echo " $(INSTALL_DATA) $(srcdir)/yulerc.template $(configfile)"; \
--	    $(INSTALL_DATA) $(srcdir)/yulerc.template $(configfile); \
-+	    $(INSTALL_DATA) $(srcdir)/yulerc.template $(DESTDIR)$(configfile); \
- 	    echo " "; \
- 	    echo " Installed yulerc.template to $(configfile)"; \
- 	  else :; fi; \
-@@ -709,20 +709,20 @@
+ 	@configbase=`basename $(configfile)`; \
+ 	if test "x$$configbase" = "xsamhainrc"; then \
+@@ -726,7 +726,7 @@
+ 	     echo "config file $$cfgfile exist ... skipping install"; \
+ 	    else \
+ 	     echo " $(INSTALL_DATA) $(srcdir)/yulerc.template $$cfgfile"; \
+-	     $(INSTALL_DATA) $(srcdir)/yulerc.template $$cfgfile; \
++	     $(INSTALL_DATA) $(srcdir)/yulerc.template $(DESTDIR)$$cfgfile; \
+ 	     echo " "; \
+ 	     echo " Installed yulerc.template to $$cfgfile"; \
+ 	    fi; \
+@@ -793,27 +793,27 @@
  
  install-binPROGRAMS: $(bin_PROGRAMS) sstrip install-lkm
  	@$(NORMAL_INSTALL)
 -	@$(mkinstalldirs) $(sbindir)
 +	@$(mkinstalldirs) $(DESTDIR)$(sbindir)
- 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+ 	@list='$(SPROGRAMS)'; for p in $$list; do \
  	  if test -f $$p; then \
- 	    echo " strip $$p && sstrip $$p"; \
+ 	    echo " strip $$p && ./sstrip $$p"; \
  	    echo " $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%samhain%@install_name@%'`"; \
  	    strip $$p > /dev/null 2>&1; \
  	    ./sstrip  $$p; \
@@ -77,41 +78,19 @@ diff -uNr samhain-1.3.5-old/Makefile.in samhain-1.3.5/Makefile.in
  	  else :; fi; \
  	done
  
- install-yulePROGRAMS: yule sstrip install-lkm
+ install-yulePROGRAMS: yule sstrip 
  	@$(NORMAL_INSTALL)
 -	@$(mkinstalldirs) $(sbindir)
 +	@$(mkinstalldirs) $(DESTDIR)$(sbindir)
- 	@list='yule'; for p in $$list; do \
+ 	@list='$(YPROGRAMS)'; for p in $$list; do \
  	  if test -f $$p; then \
- 	    echo " strip $$p && sstrip $$p"; \
-@@ -734,9 +734,9 @@
+ 	    echo " strip $$p && ./sstrip $$p"; \
+ 	    if test "x@install_name@" = "xsamhain"; then \
+-		echo " $(INSTALL_PROGRAM) $$p $(sbindir)/$$p"; \
++		echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/$$p"; \
+ 	    else \
+-	        echo " $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%yule%@install_name@%'`";\
++	        echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%yule%@install_name@%'`";\
+ 	    fi; \
  	    strip $$p > /dev/null 2>&1; \
  	    ./sstrip  $$p; \
- 	    if test "x@install_name@" == "xsamhain"; then \
--	      $(INSTALL_PROGRAM) $$p $(sbindir)/$$p; \
-+	      $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/$$p; \
- 	    else \
--	      $(INSTALL_PROGRAM) $$p $(sbindir)/`echo $$p|sed 's%yule%@install_name@%'`; \
-+	      $(INSTALL_PROGRAM) $$p $(DESTDIR)$(sbindir)/`echo $$p|sed 's%yule%@install_name@%'`; \
- 	    fi; \
- 	  else :; fi; \
- 	done
-@@ -784,14 +784,14 @@
- 	if test "x@sh_lkm@" != "x"; then \
- 		if test -d /lib/modules/$$RVER/misc; then \
- 			echo " cp samhain_hide.o /lib/modules/$$RVER/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`"; \
--	  		cp samhain_hide.o /lib/modules/$$RVER/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'` ; \
-+	  		cp samhain_hide.o $(DESTDIR)/lib/modules/$$RVER/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'` ; \
- 			echo " cp samhain_erase.o /lib/modules/$$RVER/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'`"; \
--	  		cp samhain_erase.o /lib/modules/$$RVER/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
-+	  		cp samhain_erase.o $(DESTDIR)/lib/modules/$$RVER/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
- 		elif test -d /lib/modules/misc; then \
- 	  		echo " cp samhain_hide.o /lib/modules/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`"; \
--	  		cp samhain_hide.o /lib/modules/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`; \
-+	  		cp samhain_hide.o $(DESTDIR)/lib/modules/misc/`echo samhain_hide.o|sed 's%samhain%@install_name@%'`; \
- 			echo " cp samhain_erase.o /lib/modules/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'`"; \
--	  		cp samhain_erase.o /lib/modules/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
-+	  		cp samhain_erase.o $(DESTDIR)/lib/modules/misc/`echo samhain_erase.o|sed 's%samhain%@install_name@%'` ; \
- 		else \
- 	  		echo " install-lkm: No module directory found."; \
- 		fi; \
