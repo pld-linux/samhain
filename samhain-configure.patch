@@ -1,0 +1,12 @@
+diff -burN samhain-1.8.9.orig/configure samhain-1.8.9/configure
+--- samhain-1.8.9.orig/configure	2004-07-11 23:01:30.324329104 +0200
++++ samhain-1.8.9/configure	2004-07-11 23:13:55.915981944 +0200
+@@ -596,6 +596,8 @@
+   -version | --version | --versio | --versi | --vers)
+     ac_init_version=: ;;
+ 
++  --x-libraries=*)
++    ;;
+ 
+   -with-* | --with-*)
+     ac_package=`expr "x$ac_option" : 'x-*with-\([^=]*\)'`
