@@ -6,6 +6,7 @@ Release:	0.1
 URL:		http://www.la-samhna.de/samhain/index.html
 Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.bz2
 Source1:	%{name}.init
+Source2:	%{name}rc
 Patch0:		%{name}-DESTDIR.patch
 Patch1:		%{name}-dontstrip.patch
 License:	GPL
@@ -45,7 +46,8 @@ gzip -9nf README
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d \
 	$RPM_BUILD_ROOT/%{_var}/lib/%{name}
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_initdir}/%{name}
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}
 
 %post
 /sbin/chkconfig --add %{name}
