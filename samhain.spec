@@ -18,7 +18,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # don't strip by system strip
 %define		no_install_post_strip	1
-#%define 	_use_internal_dependency_generator 0
+#%%define 	_use_internal_dependency_generator 0
 
 %description
 Samhain works by creating a "snapshot" of your system, i.e. a database
