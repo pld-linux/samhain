@@ -43,7 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 %{__make} install-man DESTDIR=$RPM_BUILD_ROOT
 
-gzip README
+gzip -9nf README
 
 install -d $RPM_BUILD_ROOT{%{_initdir},%{_logdir}}
 
