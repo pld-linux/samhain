@@ -3,16 +3,16 @@ Summary(pl):	Samhain system wykrywania integralno¶ci danych / intruzów
 Name:		samhain
 Version:	1.3.5
 Release:	0.2
-URL:		http://www.la-samhna.de/samhain/index.html
-Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.bz2
-Source1:	%{name}.init
-Source2:	%{name}rc
-Patch0:		%{name}-DESTDIR.patch
-Patch1:		%{name}-dontstrip.patch
 License:	GPL
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
+Source0:	http://www.la-samhna.de/samhain/%{name}-%{version}.tar.gz
+Source1:	%{name}.init
+Source2:	%{name}rc
+Patch0:		%{name}-DESTDIR.patch
+Patch1:		%{name}-dontstrip.patch
+URL:		http://www.la-samhna.de/samhain/index.html
 Prereq:		chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
