@@ -1,15 +1,14 @@
 Summary:	Samhain data integrity / intrusion detection system
 Summary(pl):	System kontroli integralno¶ci danych i wykrywania intruzów Samhain
 Name:		samhain
-Version:	1.5.4
-Release:	1
+Version:	1.7.5
+Release:	0.1
 License:	GPL
 Group:		Applications/System
-# extracted from http://www.la-samhna.de/samhain/samhain-current.tar.gz
-Source0:	%{name}-%{version}.tar.gz
+Source0:	http://samhain.securecirt.org/%{name}_signed-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}rc
-Patch0:		%{name}-DESTDIR.patch
+#Patch0:		%{name}-DESTDIR.patch
 URL:		http://www.la-samhna.de/samhain/
 Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -28,24 +27,13 @@ kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
 porównuje te pliki z baz±.
 
 %prep
-%setup -q
-%patch0 -p1
+%setup -qcT
+tar xz -C %{_builddir} -f %{SOURCE0} 
+tar xz -C %{_builddir} -f %{_tmppath}/%{name}-%{version}.tar.gz
 
 %build
-# stupid... it uses own PARSE_ARG and doesn't recognize some standard options
-./configure \
-	LDFLAGS="%{rpmldflags}" \
-	CFLAGS="%{rpmcflags}" \
-	CPPFLAGS="" \
-	CC=%{__cc} \
-	--build=%{_target_platform} \
-	--prefix=%{_prefix} \
-	--exec-prefix=%{_prefix} \
-	--sbindir=%{_sbindir} \
-	--sysconfdir=%{_sysconfdir} \
-	--localstatedir=%{_localstatedir} \
-	--mandir=%{_mandir} \
-	--with-suidcheck
+%configure \
+	--enable-suidcheck
 
 %{__make}
 
