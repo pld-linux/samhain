@@ -50,7 +50,7 @@ echo ':' > sstrip
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d \
 	$RPM_BUILD_ROOT%{_var}/lib/%{name} \
-	$RPM_BUILD_ROOT%{_localstatedir}/log \
+	$RPM_BUILD_ROOT%{_localstatedir}/log
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
