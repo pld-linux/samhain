@@ -1,5 +1,7 @@
+#
+# Conditional build:
 %bcond_with	prelude		# enables samhain working as a prelude sensor
-
+#
 Summary:	Samhain data integrity / intrusion detection system
 Summary(pl):	System kontroli integralno¶ci danych i wykrywania intruzów Samhain
 Name:		samhain
@@ -13,9 +15,9 @@ Source1:	%{name}.init
 Source2:	%{name}rc
 Patch0:		%{name}-configure.patch
 URL:		http://www.la-samhna.de/samhain/
-Requires(post,preun):	/sbin/chkconfig
 BuildRequires:	automake
 %{!?with_prelude:BuildRequires:	libprelude-devel >= 0.9.6}
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
