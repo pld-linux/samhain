@@ -1,19 +1,21 @@
+%bcond_with	prelude		# enables samhain working as a prelude sensor
+
 Summary:	Samhain data integrity / intrusion detection system
 Summary(pl):	System kontroli integralno¶ci danych i wykrywania intruzów Samhain
 Name:		samhain
-Version:	2.0.10
+Version:	2.2.6
 Release:	1
 License:	GPL
 Group:		Applications/System
-Source0:	http://la-samhna.de/samhain/%{name}_signed-%{version}.tar.gz
-# Source0-md5:	30fa821fdeb674b57aa7db0b66ed3af2
+Source0:	http://www.la-samhna.de/archive/%{name}_signed-%{version}.tar.gz
+# Source0-md5:	454aec59fce0a913f58b7ab2e2371280
 Source1:	%{name}.init
 Source2:	%{name}rc
-#Patch0:		%{name}-DESTDIR.patch
 Patch0:		%{name}-configure.patch
 URL:		http://www.la-samhna.de/samhain/
 Requires(post,preun):	/sbin/chkconfig
 BuildRequires:	automake
+%{!?with_prelude:BuildRequires:	libprelude-devel >= 0.9.6}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -37,11 +39,10 @@ cp -f /usr/share/automake/config.sub .
 	--enable-login-watch \
 	--enable-mounts-check \
 	--enable-ptrace \
-	--enable-suidcheck
+	--enable-suidcheck \
+	--with%{!?with_prelude:out}-prelude \
 
-%{__make} \
-	CC="%{__cc}" \
-	LIBS_TRY="-lresolv"
+%{__make}
 
 # sstrip breaks ELFs
 echo ':' > sstrip
@@ -70,9 +71,19 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /var/lock/subsys/%{name} ]; then
 	/etc/rc.d/init.d/%{name} restart 1>&2
 else
-	echo "Run \"%{_sbindir}/samhain -t init\" to initialize database if not initialized."
-	echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} daemon."
+%banner -e %{name} <<EOF
+%if %{with samhain}
+Register samhain sensor before first run:
+prelude-adduser register <profile> "imdef:w" <manager host> --uid 0 --gid 0
+and then
+%endif
+Run %{_sbindir}/samhain -t init\ to initialize database 
+%if %{without samhain}
+if not initialized.
+%endif
+EOF
 fi
+%service samhain restart "Samhain"
 
 %preun
 if [ "$1" = "0" ]; then
