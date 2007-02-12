@@ -3,7 +3,7 @@
 %bcond_with	prelude		# enables samhain working as a prelude sensor
 #
 Summary:	Samhain data integrity / intrusion detection system
-Summary(pl):	System kontroli integralno¶ci danych i wykrywania intruzów Samhain
+Summary(pl.UTF-8):   System kontroli integralnoÅ›ci danych i wykrywania intruzÃ³w Samhain
 Name:		samhain
 Version:	2.3.2
 Release:	1
@@ -25,10 +25,10 @@ Samhain works by creating a "snapshot" of your system, i.e. a database
 of cryptographic checksums of all critical files, and comparing these
 files regularly against this database.
 
-%description -l pl
-Samhain dzia³a tworz±c "obraz" twojego systemu, tj. bazê danych sum
-kontrolnych wszystkich krytycznych plików, a nastêpnie regularnie
-porównuje te pliki z baz±.
+%description -l pl.UTF-8
+Samhain dziaÅ‚a tworzÄ…c "obraz" twojego systemu, tj. bazÄ™ danych sum
+kontrolnych wszystkich krytycznych plikÃ³w, a nastÄ™pnie regularnie
+porÃ³wnuje te pliki z bazÄ….
 
 %prep
 %setup -qc
