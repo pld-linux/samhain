@@ -1,5 +1,5 @@
 Summary:	Samhain data integrity / intrusion detection system
-Summary(pl):	Samhain system wykrywania integralno¶ci danych / intruzów
+Summary(pl.UTF-8):   Samhain system wykrywania integralnoÅ›ci danych / intruzÃ³w
 Name:		samhain
 Version:	1.5.4
 Release:	0.1
@@ -24,10 +24,10 @@ Samhain works by creating a "snapshot" of your system, i.e. a database
 of cryptographic checksums of all critical files, and comparing these
 files regularly against this database.
 
-%description -l pl
-Samhain dzia³a tworz±c "obraz" twojego systemu, np. bazê danych sum
-kontrolnych wszystkich krytycznych plików a nastêpnie regularnie
-porównuje te pliki z baz±.
+%description -l pl.UTF-8
+Samhain dziaÅ‚a tworzÄ…c "obraz" twojego systemu, np. bazÄ™ danych sum
+kontrolnych wszystkich krytycznych plikÃ³w a nastÄ™pnie regularnie
+porÃ³wnuje te pliki z bazÄ….
 
 %build
 aclocal
