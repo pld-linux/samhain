@@ -3,7 +3,7 @@
 %bcond_with	prelude		# enables samhain working as a prelude sensor
 #
 Summary:	Samhain data integrity / intrusion detection system
-Summary(pl.UTF-8):   System kontroli integralności danych i wykrywania intruzów Samhain
+Summary(pl.UTF-8):	System kontroli integralności danych i wykrywania intruzów Samhain
 Name:		samhain
 Version:	2.3.2
 Release:	1
