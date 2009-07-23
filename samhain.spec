@@ -5,12 +5,12 @@
 Summary:	Samhain data integrity / intrusion detection system
 Summary(pl.UTF-8):	System kontroli integralności danych i wykrywania intruzów Samhain
 Name:		samhain
-Version:	2.5.5
+Version:	2.5.7
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://www.la-samhna.de/samhain/%{name}-current.tar.gz
-# Source0-md5:	6fe1b48167cc87cb822d8da076ca300f
+# Source0-md5:	13ea5336c1bf300bce37caa988500971
 Source1:	%{name}.init
 Source2:	%{name}rc
 Patch0:		%{name}-configure.patch
@@ -80,7 +80,7 @@ Register samhain sensor before first run:
 prelude-adduser register <profile> "imdef:w" <manager host> --uid 0 --gid 0
 and then
 %endif
-Run %{_sbindir}/samhain -t init\ to initialize database 
+Run %{_sbindir}/samhain -t init\ to initialize database
 %if %{without samhain}
 if not initialized.
 %endif
