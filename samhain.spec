@@ -5,12 +5,12 @@
 Summary:	Samhain data integrity / intrusion detection system
 Summary(pl.UTF-8):	System kontroli integralności danych i wykrywania intruzów Samhain
 Name:		samhain
-Version:	2.6.3
+Version:	2.6.4
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	http://www.la-samhna.de/samhain/%{name}-current.tar.gz
-# Source0-md5:	0a10af903c87017fbc27d5248fcd6029
+# Source0-md5:	10d2688790801d769141f8ce10f1c33c
 Source1:	%{name}.init
 Source2:	%{name}rc
 Patch0:		%{name}-configure.patch
