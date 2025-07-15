@@ -34,7 +34,7 @@ porównuje te pliki z bazą.
 %prep
 %setup -qc
 tar zxf %{name}-%{version}.tar.gz -C ..
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 cp -f /usr/share/automake/config.sub .
